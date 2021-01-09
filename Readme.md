@@ -22,5 +22,5 @@
 联系方式：(邮箱) zhang_hao_cn@foxmail.com<br>
 联系时需在邮件主题上写：课程设计github，否则可能被当做垃圾邮件处理。
 ---
-#赞赏码：
+## 赞赏码：
 ![avatar](./pays.PNG)
