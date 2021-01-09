@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登陆</title>
+    <style>
+        .fromSize {
+            margin: auto;
+            margin-top: 50px;
+            width: 400px;
+            padding: 20px;
+            border-radius: 15px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body class="divStyle">
+        <div class="fromSize card">
+            <h1>登陆</h1>
+                <input class="form-control" id="account" type="text" placeholder="请输入账户">
+                <input class="form-control mt-3" id="loginPassword" type="password" placeholder="请输入密码">
+                <button id="loginBtn" class="btn btn-primary btn-block mt-3">登陆</button>
+        </div>
+    </div>
+</body>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script>
+        $("#loginBtn").click( ()=> {
+            let account = $("#account").val()
+            let password = $("#loginPassword").val()
+            $.ajax({
+                url : "/login1",
+                type : "POST",
+                data : {'account': account, 'password': password},
+                dataType : "json",
+                success: function(result) {
+                    if (result) {
+                        sessionStorage.setItem("account", account)
+                        window.location.href = "http://localhost:8090/draw"
+                    }
+                },
+                error:function(msg){
+                    console.log(msg)
+                }
+            })
+        })
+    </script>
+</html>

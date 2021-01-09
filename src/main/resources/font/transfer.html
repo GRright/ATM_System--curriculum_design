@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>转账</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="nav justify-content-center">
+        <a class="nav-link h5" href="/draw">取款</a>
+        <a class="nav-link h5" href="/input">存款</a>
+        <a class="nav-link h5 disabled" href="#">转账</a>
+        <a class="nav-link h5" href="/index">返回登陆</a>
+    </nav>
+    <div class="container">
+        <div class="alert alert-primary" role="alert">
+            当前的余额为：<span id="moneys">0</span> 元
+        </div>
+
+            <div class="form-group">
+                <label for="account">对方账户</label>
+                <input type="text" class="form-control" id="account" placeholder="请输入账号">
+              </div>
+              <div class="form-group">
+                <label for="total">转账金额</label>
+                <input type="number" class="form-control" id="total" placeholder="请输入转账金额（单位：元）">
+              </div>
+              <div class="form-group">
+                <label for="psw">密码</label>
+                <input type="password" maxlength="6" class="form-control" id="psw" placeholder="请输入六位密码">
+              </div>
+              <button id="transferBtn" class="mt-4 btn btn-block btn-primary">确认转账</button>
+
+    </div>
+</body>
+
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script>
+    let account = sessionStorage.getItem("account")
+
+    function show() {
+        $.ajax({
+            type:"POST",
+            url:"/show",
+            data: {
+                account: account,
+            },
+            dataType:"json",
+            success:function(data){
+                $("#moneys").text(data.money)
+            },
+            error:function(msg){
+                console.log(msg);
+            }
+        });
+    }
+    show()
+
+    $("#transferBtn").click(function transfers() {
+        let otherAccount = $("#account").val()
+        let total = $("#total").val()
+        let password = $("#psw").val()
+        if (total <= 0) {
+            alert("输入金额有误")
+        } else {
+            $.ajax({
+                type:"POST",
+                url:"/Transfer",
+                data: {
+                    "account": account,
+                    "otherAccount": otherAccount,
+                    "money": total,
+                    "pay_password": password
+                },
+                dataType:"json",
+                success:function(data){
+                    if (data) {
+                        alert("转账成功")
+                        show()
+                    } else {
+                        alert("转账失败")
+                    }
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+        }
+    })
+</script>
+</html>

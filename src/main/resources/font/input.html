@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>取款</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+
+<body>
+    <nav class="nav justify-content-center">
+        <a class="nav-link h5" href="/draw">取款</a>
+        <a class="nav-link h5 disabled" href="#">存款</a>
+        <a class="nav-link h5" href="/transfer">转账</a>
+        <a class="nav-link h5" href="/index">返回登陆</a>
+    </nav>
+    <div class="container">
+        <div class="alert alert-primary" role="alert">
+            当前的余额为：<span id="moneys">0</span> 元
+        </div>
+
+            <div class="form-group">
+                <label for="account">账户</label>
+                <input type="text" class="form-control" id="account" placeholder="请输入账号">
+              </div>
+              <div class="form-group">
+                <label for="number">存款金额</label>
+                <input type="number" class="form-control" id="number" placeholder="请输入存款金额">
+              </div>
+              <button id="inputBtn" class="mt-4 btn btn-block btn-primary">确认存款</button>
+
+    </div>
+</body>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+    <script>
+        let account = sessionStorage.getItem("account")
+        $("#account").val(account)
+
+        function show() {
+            $.ajax({
+                type:"POST",
+                url:"/show",
+                data: {
+                    account: account,
+                },
+                dataType:"json",
+                success:function(data){
+                    $("#moneys").text(data.money)
+                },
+                error:function(msg){
+                    console.log(msg);
+                }
+            });
+        }
+        show()
+
+        $("#inputBtn").click(() => {
+                let number = $("#number").val()
+                if (number <= 0) {
+                    alert("输入金额有误")
+                } else {
+                    $.ajax({
+                        type:"POST",
+                        url:"/saveMoney",
+                        data: {
+                            account: account,
+                            money: number
+                        },
+                        dataType:"json",
+                        success:function(data) {
+                            if (data) {
+                                alert("存款成功")
+                                show()
+                            } else {
+                                alert("存款失败")
+                            }
+                        },
+                        error:function(msg){
+                            console.log(msg)
+                        }
+                    });
+                }
+        })
+    </script>
+</html>
