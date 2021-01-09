@@ -23,4 +23,4 @@
 联系时需在邮件主题上写：课程设计github，否则可能被当做垃圾邮件处理。
 ---
 #赞赏码：
-![avatar](./pay.jpg)
+![avatar](./pays.PNG)
